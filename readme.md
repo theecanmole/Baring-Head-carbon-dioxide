@@ -72,5 +72,5 @@ legend(1980, 400, bty="n", c("Mauna Loa Hawaii", "Baring Head New Zealand"), lwd
 mtext(side=4,cex=0.75, line=0.05,R.version.string)
 dev.off()
 ```
-!(Baringhead_co2_720-540.svg)
+![](Baringhead_co2_720-540.svg)
 
