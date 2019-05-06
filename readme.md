@@ -5,67 +5,58 @@ date: "29/04/2019"
 output: html_document
 ---
 
-
 ## Atmospheric Carbon Dioxide Baring Head and Maunu Loa
 
 This is an R Markdown document of r script to create a chart of atmospheric carbon Dioxide at Baring Head, New Zealand and at Maunu Loa, Hawaii, USA.
-```
+```{r}
 library(here)
 here()
 ```
 
 Obtain the CO2 data from Scripps
 
-```
+```{r}
 urlnz <- c("http://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/flask_co2/monthly/monthly_flask_co2_nzd.csv")
 download.file(urlnz, "co2_nzd.csv")
 rm(urlnz)
 ```
 
-```
+```{r}
 urlmlo <- c("http://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/in_situ_co2/monthly/monthly_in_situ_co2_mlo.csv")
 download.file(urlmlo, "co2_mlo.csv")
 rm(urlmlo)
 ```
-
 Read in the Baring Head data skipping the first 57 rows
 
-```
+```{r}
 bhd <- read.csv("co2_nzd.csv",skip=57,header=FALSE, sep = ",",dec=".",stringsAsFactors =FALSE, strip.white =TRUE ,na.strings =-99.99)
 ```
-
 examine the dataframe
 
-```
+```{r}
 str(bhd)
 ```
-
-Read in the Mauna Loa data skipping the first 291 rows so first row is 1977 07
-
-```
-mlo <- read.csv("co2_mlo.csv",skip=291,header=FALSE, sep = ",",dec=".",na.strings =-99.99)
-```
-
-Subset just the date and co2 measurements (10th column that includes infilled data so there are no NAs)
-```
+create a subset of just the date and CO2 measurements (10th column that includes infilled data so there are no NAs)
+```{r}
 bhd <-bhd[7:504,c(-1,-2,-3,-5,-6,-7,-8,-9)]
 ```
-Subset out just the date and co2 
+Read in the Mauna Loa data skipping the first 291 rows so first row is 1977 07
+```{r}
+mlo <- read.csv("co2_mlo.csv",skip=291,header=FALSE, sep = ",",dec=".",na.strings =-99.99)
 ```
+create a subset of just the date and CO2 measurements 
+```{r}
 mlo <-mlo[1:498,c(-1,-2,-3,-6,-7,-8,-9,-10)]
 ```
-
-Add names
-```
+Add variables names
+```{r}
 names(bhd)<-c("Date","CO2")
 names(mlo)<-c("Date","CO2")
 ```
 
-## Create a chart
-
 Create a chart
 
-```
+```{r}
 svg(filename ="Baringhead_co2_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")
 plot(plot(mlo[["Date"]],mlo[["CO2"]],ylim=c(325,415),tck=0.01, axes=F,ann=F,las=1,pch=20, cex=0.75,type="o",col="darkgray",lwd=1)
 axis(side=1, tck=0.01, at = NULL, labels = NULL, tick = T, lwd=0, lwd.tick=1)
@@ -81,5 +72,5 @@ legend(1980, 400, bty="n", c("Mauna Loa Hawaii", "Baring Head New Zealand"), lwd
 mtext(side=4,cex=0.75, line=0.05,R.version.string)
 dev.off()
 ```
-
+!(Baringhead_co2_720-540.svg)
 
