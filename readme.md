@@ -1,6 +1,6 @@
 ---
 title: "Baring Head and Maunu Loa Carbon Dioxide"
-author: "Simon Johnson"
+author: "theecanmole"
 date: "29/04/2019"
 output: html_document
 ---
