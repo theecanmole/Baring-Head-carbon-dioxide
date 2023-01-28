@@ -7,7 +7,7 @@ output: html_document
 
 ## Atmospheric Carbon Dioxide Baring Head and Maunu Loa
 
-This is an R Markdown document of r script to create a chart of atmospheric carbon Dioxide at Baring Head, New Zealand and at Maunu Loa, Hawaii, USA.
+This is an R Markdown document of r script to create a chart of atmospheric carbon dioxide at Baring Head, New Zealand and at Maunu Loa, Hawaii, USA.
 ```{r}
 library(here)
 here()
