@@ -179,7 +179,7 @@ axis(side=2, tck=0.01, at = NULL, labels = NULL, tick = T,lwd=0,lwd.tick=1,las=1
 #axis(side=4, tck=0.01, at = NULL, labels = NULL, tick = T,lwd=0,lwd.tick=1)
 grid()
 box()
-lines(bhd[["Date"]],bhd[["CO2"]],col=2,lwd=2,lty=1)
+lines(bhd[["Date"]],bhd[["CO2"]],col="#ED1A3B",lwd=2,lty=1)
 mtext(side=2,cex=1, line=-1.5,expression(paste("Carbon Dioxide parts per million")))
 mtext(side=3,cex=1.5, line=-2,expression(paste("Atmospheric C", O[2], " Baring Head 1977 to 2023")))
 mtext(side=1,line=-2.8,cex=1,expression(paste("Data: Scripps C", O[2], " Program")))
