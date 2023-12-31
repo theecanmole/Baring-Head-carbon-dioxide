@@ -7,7 +7,7 @@ set_here()
 Created file .here in ~/bhd 
 
 getwd()
-[1] "~/baringhead"
+[1] "/home/user/R/bhd/baringhead"
 
 ls()
 character(0)
@@ -26,7 +26,7 @@ rm(urlmlo)
 bhd <- read.csv("co2_nzd.csv",skip=57,header=FALSE, sep = ",",dec=".",stringsAsFactors =FALSE, strip.white =TRUE ,na.strings =-99.99)
 # examine the dataframe
 str(bhd)
-'data.frame':	552 obs. of  10 variables:
+'data.frame':	564 obs. of  10 variables:
  $ V1 : int  1977 1977 1977 1977 1977 1977 1977 1977 1977 1977 ...
  $ V2 : int  1 2 3 4 5 6 7 8 9 10 ...
  $ V3 : int  28140 28171 28199 28230 28260 28291 28321 28352 28383 28413 ...
@@ -48,7 +48,7 @@ head(bhd,7)
 6 1977  6 28291 1977.455     NA     NA     NA     NA     NA     NA
 7 1977  7 28321 1977.537 332.75 332.28 332.62 332.14 332.75 332.28
  
-head(bhd[7:528,]) 
+head(bhd[7:564,]) 
    V1 V2    V3       V4     V5     V6     V7     V8     V9    V10
 7  1977  7 28321 1977.537 332.75 332.28 332.62 332.14 332.75 332.28
 8  1977  8 28352 1977.622 -99.99 -99.99 332.98 332.35 332.98 332.35
@@ -57,8 +57,16 @@ head(bhd[7:528,])
 11 1977 11 28444 1977.874 333.79 333.91 332.85 332.97 333.79 333.91
 12 1977 12 28474 1977.956 333.32 333.46 333.02 333.16 333.32 333.46
 
+# leave in only cols V4 and V10
 head(bhd[c(-1,-2,-3,-5,-6,-7,-8,-9)])
-
+> head(bhd[c(-1,-2,-3,-5,-6,-7,-8,-9)])
+        V4    V10
+1 1977.041 331.19
+2 1977.126 331.37
+3 1977.203 331.53
+4 1977.288 331.71
+5 1977.370 331.89
+6 1977.455 332.07
 head(bhd[3:504,c(-1,-2,-3,-5,-6,-7,-8,-9)])
         V4    V10
 7  1977.537 332.28
@@ -66,35 +74,38 @@ head(bhd[3:504,c(-1,-2,-3,-5,-6,-7,-8,-9)])
 9  1977.707 332.10
 tail(bhd,5) 
       V1 V2    V3       V4  V5  V6     V7     V8     V9    V10
-548 2022  8 44788 2022.622 NaN NaN 414.82 414.07 414.82 414.07
-549 2022  9 44819 2022.707 NaN NaN 414.95 414.24 414.95 414.24
-550 2022 10 44849 2022.789 NaN NaN 414.87 414.41 414.87 414.41
-551 2022 11 44880 2022.874 NaN NaN 414.34 414.58 414.34 414.58
-552 2022 12 44910 2022.956 NaN NaN 414.67 414.75 414.67 414.75
+560 2023  8 45153 2023.622 NaN NaN 416.92 416.18 416.92 416.18
+561 2023  9 45184 2023.707 NaN NaN 417.08 416.33 417.08 416.33
+562 2023 10 45214 2023.789 NaN NaN 416.88 416.46 416.88 416.46
+563 2023 11 45245 2023.874 NaN NaN 416.37 416.61 416.37 416.61
+564 2023 12 45275 2023.956 NaN NaN 416.61 416.74 416.61 416.74
 
 # subset just the date V4 and co2 measurements V10 (10th column that includes infilled data so no NAs) from row 7 7  1977.537 to present
-bhd <-bhd[7:552,c(-1,-2,-3,-5,-6,-7,-8,-9)]
+bhd <-bhd[7:564,c(-1,-2,-3,-5,-6,-7,-8,-9)]
 
 # Add names
 names(bhd)<-c("Date","CO2")
 
 str(bhd)
-'data.frame':	546 obs. of  2 variables:
+'data.frame':	558 obs. of  2 variables:
  $ Date: num  1978 1978 1978 1978 1978 ...
- $ CO2 : num  332 332 332 332 334 ... 
+ $ CO2 : num  332 332 332 332 334 ...
+
 head(bhd,1)
     Date    CO2
 7 1977.537 332.33
 tail(bhd,1)
         Date    CO2
 552 2022.956 414.75
+        Date    CO2
+564 2023.956 416.74 
 
-# read in the Mauna Loa data skipping the first 291 rows so first row is 1977 07
-mlo <- read.csv("co2_mlo.csv",skip=291,header=FALSE,stringsAsFactors =FALSE, sep = ",",dec=".",na.strings =-99.99)
+# read in the Mauna Loa data skipping the first 294 rows so first row is 1977 07
+mlo <- read.csv("co2_mlo.csv",skip=294,header=FALSE,stringsAsFactors =FALSE, sep = ",",dec=".",na.strings =-99.99)
 
 # examine the dataframe
 str(mlo)
-'data.frame':	558 obs. of  10 variables:
+'data.frame':	558 obs. of  11 variables:
  $ V1 : int  1977 1977 1977 1977 1977 1977 1978 1978 1978 1978 ...
  $ V2 : int  7 8 9 10 11 12 1 2 3 4 ...
  $ V3 : int  28321 28352 28383 28413 28444 28474 28505 28536 28564 28595 ...
@@ -126,11 +137,11 @@ tail(mlo,13)
 557 2023 11 45245 2023.874 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
 558 2023 12 45275 2023.956 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99 
 
-# subset out just the date and co2 up to 2022 December date of last value
-mlo <-mlo[1:546,c(-1,-2,-3,-6,-7,-8,-9,-10)]
+# subset out just the date and co2 up to 2023 December date of last value
+mlo <-mlo[1:558,c(-1,-2,-3,-6,-7,-8,-9,-10,-11)]
 names(mlo)<-c("Date","CO2")
 str(mlo)
-'data.frame':	546 obs. of  2 variables:
+'data.frame':	558 obs. of  2 variables:
  $ Date: num  1978 1978 1978 1978 1978 ...
  $ CO2 : num  335 333 332 331 332 ...
  
@@ -141,15 +152,28 @@ head(mlo,2)
 
 tail(mlo,2)
         Date    CO2
-545 2022.874 417.04
-546 2022.956 418.56
+557 2023.874 -99.99
+558 2023.956 -99.99 
+# check the -99.99 or NA values
+mlo[556:558,2] 
+[1] -99.99 -99.99 -99.99 
+# overwrite with 'NA'
+mlo[556:558,2] <- NA 
+mlo[556:558,2]
+[1] NA NA NA 
+
+tail(bhd,2)
+        Date    CO2
+563 2023.874 416.61
+564 2023.956 416.74  
+
 # what scale should the y axis be?
 max(mlo[["CO2"]])
-[1] 420.77
+[1] 423.78
 # create plot in SVG format
 svg(filename ="Baringhead_co2_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")    
 par(mar=c(3.1,3.1,1,1)+0.1)
-plot(mlo[["Date"]],mlo[["CO2"]],ylim=c(325,421),tck=0.01, axes=F,ann=F,las=1,pch=20, cex=0.75,type="o",col="darkgray",lwd=1)
+plot(mlo[["Date"]],mlo[["CO2"]],ylim=c(325,425),tck=0.01, axes=F,ann=F,las=1,pch=20, cex=0.75,type="o",col="darkgray",lwd=1)
 axis(side=1, tck=0.01, at = NULL, labels = NULL, tick = T,lwd=0,lwd.tick=1)
 axis(side=2, tck=0.01, at = NULL, labels = NULL, tick = T,lwd=0,lwd.tick=1,las=1)
 #axis(side=4, tck=0.01, at = NULL, labels = NULL, tick = T,lwd=0,lwd.tick=1)
@@ -157,7 +181,7 @@ grid()
 box()
 lines(bhd[["Date"]],bhd[["CO2"]],col=2,lwd=2,lty=1)
 mtext(side=2,cex=1, line=-1.5,expression(paste("Carbon Dioxide parts per million")))
-mtext(side=3,cex=1.5, line=-2,expression(paste("Atmospheric C", O[2], " Baring Head 1977 to 2022")))
+mtext(side=3,cex=1.5, line=-2,expression(paste("Atmospheric C", O[2], " Baring Head 1977 to 2023")))
 mtext(side=1,line=-2.8,cex=1,expression(paste("Data: Scripps C", O[2], " Program")))
 mtext(side=1,cex=0.7, line=-1.3,"http://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/in_situ_co2/monthly/monthly_in_situ_co2_mlo.csv\nhttp://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/flask_co2/monthly/monthly_flask_co2_nzd.csv")
 legend(1980, 415, bty="n", c("Mauna Loa Hawaii", "Baring Head New Zealand"), lwd=c(1,2), pch=c(20,NA),lty = 1, col = c("darkgray",2))
@@ -177,20 +201,20 @@ write.table(mlo, file = "co2-mlo.csv", sep = ",", col.names = TRUE, qmethod = "d
 1 1984.874 342.98
 
 str(mlo)
-'data.frame':	546 obs. of  2 variables:
+'data.frame':	558 obs. of  2 variables:
  $ Date: num  1978 1978 1978 1978 1978 ...
  $ CO2 : num  335 333 332 331 332 ... 
 
 # create new column 'Site'
-mlo[["Site"]]<-c(rep("mlo",546))
+mlo[["Site"]]<-c(rep("mlo",nrow(mlo)))
 
 str(mlo) 
- 'data.frame':	546 obs. of  3 variables:
+ 'data.frame':	558 obs. of  3 variables:
  $ Date: num  1978 1978 1978 1978 1978 ...
  $ CO2 : num  335 333 332 331 332 ...
  $ Site: chr  "mlo" "mlo" "mlo" "mlo" ...
 
-bhd[["Site"]]<-c(rep("bhd",546))
+bhd[["Site"]]<-c(rep("bhd",nrow(bhd)))
  
 merged_bhd_mlo_data <- rbind(bhd,mlo)
 
@@ -213,9 +237,38 @@ tail(merged_bhd_mlo_data)
 5461 2022.956 418.56  mlo
 
 str(merged_bhd_mlo_data) 
-'data.frame':	1092 obs. of  3 variables:
+'data.frame':	1116 obs. of  3 variables:
  $ Date: num  1978 1978 1978 1978 1978 ...
  $ CO2 : num  332 332 332 332 334 ...
  $ Site: chr  "bhd" "bhd" "bhd" "bhd" ...
 # write merged dataframe to a csv file  
 write.table(merged_bhd_mlo_data, file = "tidy_merged_bhd_mlo_data.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
+
+sessionInfo()
+R version 4.3.1 (2023-06-16)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Debian GNU/Linux 10 (buster)
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.8.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.8.0
+
+locale:
+ [1] LC_CTYPE=en_NZ.UTF-8          LC_NUMERIC=C                 
+ [3] LC_TIME=en_NZ.UTF-8           LC_COLLATE=en_NZ.UTF-8       
+ [5] LC_MONETARY=en_NZ.UTF-8       LC_MESSAGES=en_NZ.UTF-8      
+ [7] LC_PAPER=en_NZ.UTF-8          LC_NAME=en_NZ.UTF-8          
+ [9] LC_ADDRESS=en_NZ.UTF-8        LC_TELEPHONE=en_NZ.UTF-8     
+[11] LC_MEASUREMENT=en_NZ.UTF-8    LC_IDENTIFICATION=en_NZ.UTF-8
+
+time zone: Pacific/Auckland
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] rkward_0.7.5
+
+loaded via a namespace (and not attached):
+[1] compiler_4.3.1 tools_4.3.1 
