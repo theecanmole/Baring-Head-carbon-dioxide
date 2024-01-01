@@ -1,11 +1,5 @@
 # start a new project in R Studio and associate the folder 'bhd' with that project
 
-library(here)
-here() starts at ~/bhd
-here()
-set_here()
-Created file .here in ~/bhd 
-
 getwd()
 [1] "/home/user/R/bhd/baringhead"
 
@@ -59,7 +53,6 @@ head(bhd[7:564,])
 
 # leave in only cols V4 and V10
 head(bhd[c(-1,-2,-3,-5,-6,-7,-8,-9)])
-> head(bhd[c(-1,-2,-3,-5,-6,-7,-8,-9)])
         V4    V10
 1 1977.041 331.19
 2 1977.126 331.37
@@ -96,8 +89,6 @@ head(bhd,1)
 7 1977.537 332.33
 tail(bhd,1)
         Date    CO2
-552 2022.956 414.75
-        Date    CO2
 564 2023.956 416.74 
 
 # read in the Mauna Loa data skipping the first 294 rows so first row is 1977 07
@@ -116,26 +107,19 @@ str(mlo)
  $ V8 : num  334 334 334 334 335 ...
  $ V9 : num  335 333 332 331 332 ...
  $ V10: num  334 334 335 334 334 ... 
+ $ V11: chr  " MLO" " MLO" " MLO" " MLO"
 head(mlo,2)
-    V1 V2    V3       V4     V5     V6     V7     V8     V9    V10
-1 1977  7 28321 1977.537 334.93 334.22 334.68 334.00 334.93 334.22
-2 1977  8 28352 1977.622 332.76 334.13 332.77 334.17 332.76 334.13 
+    V1 V2    V3       V4     V5     V6     V7     V8     V9    V10  V11
+1 1977  7 28321 1977.537 334.93 334.22 334.67 333.99 334.93 334.22  MLO
+2 1977  8 28352 1977.622 332.76 334.13 332.76 334.16 332.76 334.13  MLO
 
-tail(mlo,13)
-      V1 V2    V3       V4     V5     V6     V7     V8     V9    V10
-546 2022 12 44910 2022.956 418.56 419.48 418.41 419.32 418.56 419.48
-547 2023  1 44941 2023.041 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
-548 2023  2 44972 2023.126 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
-549 2023  3 45000 2023.203 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
-550 2023  4 45031 2023.288 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
-551 2023  5 45061 2023.370 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
-552 2023  6 45092 2023.455 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
-553 2023  7 45122 2023.537 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
-554 2023  8 45153 2023.622 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
-555 2023  9 45184 2023.707 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
-556 2023 10 45214 2023.789 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
-557 2023 11 45245 2023.874 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99
-558 2023 12 45275 2023.956 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99 
+tail(mlo,5)
+      V1 V2    V3       V4     V5     V6     V7     V8     V9    V10  V11
+554 2023  8 45153 2023.622 419.56 421.11 419.58 421.18 419.56 421.11  MLO
+555 2023  9 45184 2023.707 418.07 421.57 417.96 421.48 418.07 421.57  MLO
+556 2023 10 45214 2023.789 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99  MLO
+557 2023 11 45245 2023.874 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99  MLO
+558 2023 12 45275 2023.956 -99.99 -99.99 -99.99 -99.99 -99.99 -99.99  MLO
 
 # subset out just the date and co2 up to 2023 December date of last value
 mlo <-mlo[1:558,c(-1,-2,-3,-6,-7,-8,-9,-10,-11)]
@@ -167,7 +151,7 @@ tail(bhd,2)
 563 2023.874 416.61
 564 2023.956 416.74  
 
-# what scale should the y axis be?
+# what maximum scale should the y axis be?
 max(mlo[["CO2"]])
 [1] 423.78
 # create plot in SVG format
@@ -193,6 +177,14 @@ dev.off()
 write.table(bhd, file = "co2-bhd.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
 write.table(mlo, file = "co2-mlo.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE)
 
+library(ggplot2) 
+
+ggplot(mlo, aes(x=Date, y = CO2)) +  geom_line(colour = "#ED1A3B", linewidth=0.5) 
++ 
+geom_line(aes( x=Date ,y =CO2 ), color = "black", linetype = "dotted", linewidth=0.5) 
+geom_line(aes( x=date ,y = spotroll31), color = "steelblue", linetype = "twodash", linewidth=0.5) 
+
+
 # read in the data as written to the project folder
 #mlo <- read.csv("/home/user/R/bhd/co2-mlo.csv")
 #bhd <- read.csv("/home/user/R/bhd/co2-bhd.csv")
@@ -215,7 +207,8 @@ str(mlo)
  $ Site: chr  "mlo" "mlo" "mlo" "mlo" ...
 
 bhd[["Site"]]<-c(rep("bhd",nrow(bhd)))
- 
+str(bhd) 
+
 merged_bhd_mlo_data <- rbind(bhd,mlo)
 
 head(merged_bhd_mlo_data) 
@@ -243,6 +236,15 @@ str(merged_bhd_mlo_data)
  $ Site: chr  "bhd" "bhd" "bhd" "bhd" ...
 # write merged dataframe to a csv file  
 write.table(merged_bhd_mlo_data, file = "tidy_merged_bhd_mlo_data.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
+
+svg(filename="NZ-BHD-MLO-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))
+#png("NZ-BHD-MLO-720by540.png", bg="white", width=720, height=540,pointsize = 14)
+ggplot(merged_bhd_mlo_data, aes(x = Date, y = CO2, group= Site)) +  
+geom_line(aes (colour = Site)) + theme(legend.position = c(0.1,0.9))+ 
+labs(title=expression(paste("Atmospheric C", O[2], " Baring Head 1977 to 2023")), xlab("Year")) +
+ylab(expression(paste("C", O[2])))
+dev.off()
+
 
 sessionInfo()
 R version 4.3.1 (2023-06-16)
