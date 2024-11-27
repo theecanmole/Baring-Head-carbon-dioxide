@@ -1,4 +1,4 @@
-# start a new project in R Studio and associate the folder 'bhd' with that project
+# check my user directory
 
 getwd()
 [1] "/home/user/R/bhd/baringhead"
@@ -176,74 +176,6 @@ dev.off()
 
 write.table(bhd, file = "co2-bhd.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
 write.table(mlo, file = "co2-mlo.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE)
-
-library(ggplot2) 
-
-ggplot(mlo, aes(x=Date, y = CO2)) +  geom_line(colour = "#ED1A3B", linewidth=0.5) 
-+ 
-geom_line(aes( x=Date ,y =CO2 ), color = "black", linetype = "dotted", linewidth=0.5) 
-geom_line(aes( x=date ,y = spotroll31), color = "steelblue", linetype = "twodash", linewidth=0.5) 
-
-
-# read in the data as written to the project folder
-#mlo <- read.csv("/home/user/R/bhd/co2-mlo.csv")
-#bhd <- read.csv("/home/user/R/bhd/co2-bhd.csv")
-
-     Date    CO2
-1 1984.874 342.98
-
-str(mlo)
-'data.frame':	558 obs. of  2 variables:
- $ Date: num  1978 1978 1978 1978 1978 ...
- $ CO2 : num  335 333 332 331 332 ... 
-
-# create new column 'Site'
-mlo[["Site"]]<-c(rep("mlo",nrow(mlo)))
-
-str(mlo) 
- 'data.frame':	558 obs. of  3 variables:
- $ Date: num  1978 1978 1978 1978 1978 ...
- $ CO2 : num  335 333 332 331 332 ...
- $ Site: chr  "mlo" "mlo" "mlo" "mlo" ...
-
-bhd[["Site"]]<-c(rep("bhd",nrow(bhd)))
-str(bhd) 
-
-merged_bhd_mlo_data <- rbind(bhd,mlo)
-
-head(merged_bhd_mlo_data) 
-       Date    CO2 Site
-7  1977.537 332.28  bhd
-8  1977.622 332.35  bhd
-9  1977.707 332.10  bhd
-10 1977.789 332.33  bhd
-11 1977.874 333.91  bhd
-12 1977.956 333.46  bhd
-
-tail(merged_bhd_mlo_data) 
-         Date    CO2 Site
-5411 2022.537 418.68  mlo
-5421 2022.622 416.76  mlo
-5431 2022.707 415.41  mlo
-5441 2022.789 415.31  mlo
-5451 2022.874 417.04  mlo
-5461 2022.956 418.56  mlo
-
-str(merged_bhd_mlo_data) 
-'data.frame':	1116 obs. of  3 variables:
- $ Date: num  1978 1978 1978 1978 1978 ...
- $ CO2 : num  332 332 332 332 334 ...
- $ Site: chr  "bhd" "bhd" "bhd" "bhd" ...
-# write merged dataframe to a csv file  
-write.table(merged_bhd_mlo_data, file = "tidy_merged_bhd_mlo_data.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
-
-svg(filename="NZ-BHD-MLO-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))
-#png("NZ-BHD-MLO-720by540.png", bg="white", width=720, height=540,pointsize = 14)
-ggplot(merged_bhd_mlo_data, aes(x = Date, y = CO2, group= Site)) +  
-geom_line(aes (colour = Site)) + theme(legend.position = c(0.1,0.9))+ 
-labs(title=expression(paste("Atmospheric C", O[2], " Baring Head 1977 to 2023")), xlab("Year")) +
-ylab(expression(paste("C", O[2])))
-dev.off()
 
 
 sessionInfo()
