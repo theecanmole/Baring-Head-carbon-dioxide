@@ -115,6 +115,55 @@ as.numeric(as.Date("1980-01-31"))
 as.numeric(as.Date("1978-01-31")) 
 [1] 2952 
 
+# create plot in SVG format using the Stats NZ Baring Head data to 2024
+svg(filename ="Baringhead_StatsNZ-co2_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")    
+par(mar=c(3.1,3.1,1,1)+0.1)
+plot(mlo1,ylim=c(325,430),tck=0.01, axes=T,ann=F,las=1,pch=20, cex=0.75,type="o",col="darkgray",lwd=1)
+axis(side=4, tck=0.01,  labels = FALSE, tick = T,lwd=0,lwd.tick=1)
+grid()
+lines(meanfitco2, col="#ED1A3B",lwd=2,lty=1)
+mtext(side=2,cex=1, line=-1.5,expression(paste("Carbon Dioxide parts per million")))
+mtext(side=3,cex=1.5, line=-2,expression(paste("Atmospheric C", O[2], " Baring Head 1977 to 2024")))
+mtext(side=1,line=-2.8,cex=1,expression(paste("Data: Scripps C", O[2], " Program")))
+mtext(side=1,cex=0.7, line=-1.3,"http://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/in_situ_co2/monthly/monthly_in_situ_co2_mlo.csv\nhttp://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/flask_co2/monthly/monthly_flask_co2_nzd.csv")
+legend(2952, 420, bty="n", c("Mauna Loa Hawaii", "Baring Head New Zealand"), lwd=c(1,2), pch=c(20,NA),lty = 1, col = c("darkgray","#ED1A3B"))
+mtext(side=4,cex=0.75, line=0.05,R.version.string)
+dev.off() 
+
+check if Stats NZ CO2 is same as Scripps CO2 data
+identical(bhd1,meanfitco2) 
+[1] FALSE 
+all.equal(bhd1,meanfitco2) 
+[1] "Names: 2 string mismatches"                                               
+[2] "Attributes: < Component “row.names”: Numeric: lengths (564, 601) differ >"
+[3] "Component 1: Numeric: lengths (564, 601) differ"                          
+[4] "Component 2: Numeric: lengths (564, 601) differ"  
+
+601-564
+str(meanfitco2[38:601,] )
+
+meanfitco2A <- meanfitco2[38:601,]
+all.equal(bhd1,meanfitco2A) 
+[1] "Names: 2 string mismatches"                                               
+[2] "Attributes: < Component “row.names”: Mean relative difference: 3.516814 >"
+[3] "Component 1: Mean relative difference: 0.03404391"                        
+[4] "Component 2: Mean relative difference: 0.004373142"    
+
+cor(bhd1[["CO2"]],meanfitco2A[["greenhouse_gas_concentration"]])
+[1] 0.9994702 
+all.equal(bhd1[["CO2"]],meanfitco2A[["greenhouse_gas_concentration"]])
+[1] "Mean relative difference: 0.004373142" 
+identical(bhd1[["CO2"]],meanfitco2A[["greenhouse_gas_concentration"]])
+[1] FALSE 
+plot(bhd1[["CO2"]],meanfitco2A[["greenhouse_gas_concentration"]]) 
+
+plot(bhd1[["CO2"]],type='l',col='blue')
+
+lines(meanfitco2A,col='magenta')
+plot(mlo1,pch=20, cex=0.75,type="o",col="darkgray",lwd=1)
+points(mlo1,pch=20, cex=0.75,type="o",col="darkgray",lwd=1)
+lines(bhd1,type='l',col='blue')
+
 # write the data to a .csv file 
 
 write.table(bhd1, file = "co2-bhd.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
