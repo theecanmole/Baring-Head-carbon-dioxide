@@ -139,9 +139,6 @@ all.equal(bhd1,meanfitco2)
 [3] "Component 1: Numeric: lengths (564, 601) differ"                          
 [4] "Component 2: Numeric: lengths (564, 601) differ"  
 
-601-564
-str(meanfitco2[38:601,] )
-
 meanfitco2A <- meanfitco2[38:601,]
 all.equal(bhd1,meanfitco2A) 
 [1] "Names: 2 string mismatches"                                               
